@@ -1,0 +1,52 @@
+name: Deploy (self hosted)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted]
+    env:
+      COMPOSE_FILE: docker-compose.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure .env exists (server side)
+        run: |
+          whoami
+          # Optional: write or update a minimal .env using GitHub Secrets
+          # Comment this out if you already manage .env outside CI.
+          cat > .env <<EOF
+          BOT_TOKEN=${{ secrets.BOT_TOKEN }}
+          BOT_DEV_ID=392208171
+          BOT_ADMIN_ID=392208171
+          
+          DEX_NAME=stonfi
+          
+          IS_TESTNET=False
+          MANIFEST_URL=https://raw.githubusercontent.com/itsdeadcow/token-access-control-bot/refs/heads/main/tonconnect-manifest.json
+          
+          TONAPI_KEY=${{ secrets.API_KEY }}
+          TONAPI_RPS=1
+          
+          SCHEDULER_CHECK_CHAT_MEMBERS_INTERVAL=5
+          SCHEDULER_UPDATE_TOKEN_HOLDERS_INTERVAL=5
+          
+          REDIS_HOST=redis
+          REDIS_PORT=6379
+          REDIS_DB=0
+          EOF
+
+      - name: Pull base images and cache layers
+        run: docker compose pull || true
+
+      - name: Rebuild and start services
+        run: docker compose up -d --build --remove-orphans
+
+      - name: Scale workers
+        run: docker compose up -d --scale worker=2
+
+      - name: Prune old images
+        run: docker image prune -f

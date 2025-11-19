@@ -128,6 +128,12 @@ async def main() -> None:
         storage=ATCRedisStorage(storage.redis),
         manifest_url=config.MANIFEST_URL,
         api_tokens={"tonapi": config.tonapi.TONCONNECT_KEY},
+        exclude_wallets=["bitgetTonWallet", "binanceWeb3TonWallet", "okxWallet", "hot",
+                         "safepalwallet", "GateWallet", "openmask",
+                         "tomoWallet", "miraiapp-tg",
+                         "Architec.ton", "nicegramWallet", "echoooTonWallet", "blitzwallet", "koloWeb3Wallet",
+                         "imToken", "cactuslink", "onekey", "defiway"
+                         "tokenpocket", "uxuyWallet", "BitgetWeb3", "xtonwallet", "bitgetWalletLite"]
     )
     tc_session_manager = TonConnectSessionManager(
         redis=storage.redis,
