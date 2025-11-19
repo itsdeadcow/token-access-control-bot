@@ -43,10 +43,7 @@ jobs:
         run: docker compose pull || true
 
       - name: Rebuild and start services
-        run: docker compose up -d --build --remove-orphans
-
-      - name: Scale workers
-        run: docker compose up -d --scale worker=2
+        run: docker compose up -d --build
 
       - name: Prune old images
         run: docker image prune -f
