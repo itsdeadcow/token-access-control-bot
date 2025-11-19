@@ -35,6 +35,6 @@ async def kick_member(bot: Bot, member: MemberDB) -> None:
         await asyncio.sleep(.2)
 
 
-def amount_string(amount: int, decimals: Optional[int] = None) -> str:
+def amount_string(amount: int, decimals: Optional[int] = 9) -> str:
     amount = to_amount(amount, decimals=decimals)  # type: ignore
     return "{:.9}".format(Decimal(str(amount)))
