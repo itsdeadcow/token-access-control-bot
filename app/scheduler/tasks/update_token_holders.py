@@ -93,6 +93,7 @@ async def update_token_holders() -> None:
                     found_holders = -1
 
                 for holder in result.addresses:
+                    print(holder.owner.address.to_raw(), holder.balance)
                     holders[holder.owner.address.to_raw()] = int(holder.balance)
 
         except TONAPIInternalServerError as e:
