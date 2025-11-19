@@ -41,6 +41,7 @@ async def process_and_kick_members(
     )
 
     for member in members:
+        logging.info(f"Checking {member.user.full_name} in {chat.name}...")
         if is_any_empty_token_holders(tokens):
             logging.warning(f"Skipping check members for {chat.name} because of empty token holders!")
             break
