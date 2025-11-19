@@ -62,6 +62,8 @@ async def main_menu_callback_query(call: CallbackQuery, manager: Manager, atc_ma
         await manager.send_loader_message()
 
         tokens = await TokenDB.all(manager.sessionmaker)
+        for token in tokens:
+            print(token)
 
         if await user_is_holder(manager.user_db, tokens):
             await Window.allow_access(manager)
