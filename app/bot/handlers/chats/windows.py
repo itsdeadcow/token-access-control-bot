@@ -72,6 +72,7 @@ class ChatWindow:
         items_per_page = 10
         start_index = (page - 1) * items_per_page
         paginated_holders = sorted_holders[start_index:start_index + items_per_page]
+        print(paginated_holders)
 
         top_holders_text = "\n".join(
             f"{rank + start_index + 1}. {full_name}: {hcode(amount_string(balance))}"
